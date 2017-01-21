@@ -1,0 +1,20 @@
+{
+  "name": "docker_presentatie",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "connect-static-file": "^1.1.2",
+    "express": "^4.14.0",
+    "headjs": "^1.0.3",
+    "highlight.js": "^9.9.0",
+    "jquery": "^3.1.1",
+    "reveal.js": "^3.4.0",
+    "typed.js": "^1.1.1"
+  }
+}

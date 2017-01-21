@@ -1,0 +1,67 @@
+<html>
+<head>
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/sky.css">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="zenburn.css">
+    <link rel="stylesheet" type="text/css" href="/asciinema-player.css" />
+    <script src="static/js/jquery.js"></script>
+    <script src="static/js/typed.js"></script>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <h1>Analyse van docker</h1>
+            <h3>Hoe kan Docker het productie- en/of developmentproces van applicaties versnellen?</h3>
+            <small>Door Thomas Vanmellaerts</small>
+        </section>
+        <section>
+            <section>
+                <h2>Wat is Docker?</h2>
+                <img data-src="images/docker.png" width="300"/>
+                <blockquote>Docker is een open-source project om gemakkelijk containers te maken van ieder programma </blockquote>
+            </section>
+            <section>
+                <h3>Image?</h3>
+                <img data-src="images/image.png" width="300"/>
+                <blockquote>Een docker image is een onverandelijk bestandssysteem die gebruikt om containers te maken.</blockquote>
+            </section>
+            <section>
+                <h3>Container?</h3>
+                <img data-src="images/container.jpg" width="300"/>
+                <blockquote>Een docker container verzamelt een stukje software in een compleet bestandsysteem en bevat alles wat het nodig heeft</blockquote>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h2>DockerFile</h2>
+                <blockquote>Een Dockerfile bevat alle instructies om een image te maken</blockquote>
+            </section>
+            <section>
+                <asciinema-player font-size="10px" src="code/dockerfile.json"/>
+            </section>
+        </section>
+    </div>
+</div>
+<script src="/asciinema-player.js"></script>
+<script src="static/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+<script>
+    Reveal.initialize({
+        dependencies: [
+            // Syntax highlight for <code> elements
+            { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+        ]
+    });
+    Reveal.addEventListener( 'slidechanged', function( event ) {
+        var vids = event.currentSlide.getElementsByTagName('asciinema-player')
+        for (var i = 0; i < vids.length; i++){
+            var vid = vids[i]
+            vid.currentTime = 0
+            vid.play()
+        }
+    });
+</script>
+</body>
+</html>
