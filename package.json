@@ -11,6 +11,7 @@
   "dependencies": {
     "connect-static-file": "^1.1.2",
     "express": "^4.14.0",
+    "font-awesome": "^4.7.0",
     "headjs": "^1.0.3",
     "highlight.js": "^9.9.0",
     "jquery": "^3.1.1",

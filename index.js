@@ -8,6 +8,7 @@ var Mustache  = require('mustache');
 
 app.use('/', express.static('.'));
 app.use('/', express.static('node_modules/reveal.js'));
+app.use('/static', express.static('node_modules/font-awesome'));
 app.use('/static', express.static('node_modules/typed.js'));
 app.use('/static/js', express.static('node_modules/jquery/dist'));
 app.use('/static/js', express.static('node_modules/headjs/dist/1.0.0'));
@@ -15,7 +16,6 @@ app.use('/static/css/highlight', express.static('node_modules/highlight.js/style
 
 
 io.on( 'connection', function( socket ) {
-    console.log("something happend")
     socket.on( 'new-subscriber', function( data ) {
         socket.broadcast.emit( 'new-subscriber', data );
     });

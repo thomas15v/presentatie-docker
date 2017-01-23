@@ -4,7 +4,8 @@
     <link rel="stylesheet" href="css/theme/sky.css">
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="static/css/zenburn.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/asciinema-player.css" />
+    <link rel="stylesheet" href="/static/css/asciinema-player.css">
+    <link rel="stylesheet" href="/static/css/font-awesome.css">
 </head>
 <body>
 <div class="reveal">
@@ -14,24 +15,44 @@
             <h3>Hoe kan Docker het productie- en/of developmentproces van applicaties versnellen?</h3>
             <small>Door Thomas Vanmellaerts</small>
             <aside class="notes">
-
+                Hallo mijn naam is Thomas Vanmellaerts en ik ga jullie wat meer vertellen over Docker en algemeen over hoe
+                docker gebruikt kan worden in development en in productie.
             </aside>
         </section>
         <section>
             <section>
                 <h2>Wat is Docker?</h2>
                 <img data-src="images/docker.png" width="300"/>
-                <blockquote>Docker is een open-source project om gemakkelijk containers te maken van ieder programma </blockquote>
+                <blockquote>Docker is een open-source project om gemakkelijk containers te maken van ieder programma.</blockquote>
+                <aside class="notes">
+                    Voor dat ik dit kan doen moet ik eerst uitleggen wat docker is. Docker is een open-source project die programma's gemakkelijk can containen.
+
+                    Dankzij docker kan je de deployment van software projectmatig aanpakken.
+                </aside>
             </section>
             <section>
                 <h3>Image?</h3>
                 <img data-src="images/image.png" width="300"/>
                 <blockquote>Een docker image is een onverandelijk bestandssysteem die gebruikt om containers te maken.</blockquote>
+                <aside class="notes">
+                    Om een programma te containen, moet je een image maken met alles erin die het programma nodig heeft om te werken.
+                    Een image is opgebouwd laag per laag, so kan je meerdere images aan elkaar verbinden.
+
+                    Docker images worden opgeslagen in docker hub. Docker hub is een gratis service die docker aanbied
+                    om gemmakelijk images de delen.
+                </aside>
             </section>
             <section>
                 <h3>Container?</h3>
                 <img data-src="images/container.jpg" width="300"/>
-                <blockquote>Een docker container verzamelt een stukje software in een compleet bestandsysteem en bevat alles wat het nodig heeft</blockquote>
+                <blockquote>Een docker container verzamelt een stukje software in een compleet bestandssysteem en bevat alles wat het nodig heeft.</blockquote>
+                <aside class="notes">
+                    Een container is een werkende instantie van een image. Dankzij de image weet de container hoe hij moet werken.
+
+                    Een container heeft meestal ook poorten open naar de buitenwereld of containers. Dit is zo omdat docker
+                    voornamelijk gebruikt wordt voor netwerkservices. Maar het is perfect mogelijk om dit niet te doen. Bijvoorbeeld een docker container
+                    met een backup software die automatisch containers backuped. De mogelijkheden zijn eindeloos
+                </aside>
             </section>
         </section>
         <section>
@@ -40,15 +61,48 @@
             </section>
             <section>
                 <h2>DockerFile</h2>
-                <blockquote>Een Dockerfile bevat alle instructies om een image te maken</blockquote>
+                <blockquote>Een Dockerfile bevat alle instructies om een image te maken.</blockquote>
+                <aside class="notes">
+                    Een DockerFile wordt gebruikt om een image te builden. En bevat alle instructies die normaal door een server beheerder
+                    zou uitgevoerd worden als hij het programma gewoon native zou installeren.
+                </aside>
             </section>
             <section data-vertical-align-top>
+                <aside class="notes">
+                    Hierbij gaan we een web server opzetten die gewoon hello world toont op de landing pagina
+
+                    We maken gebruik vaan een image die node noemt, deze image is gebazeerd op debian en heeft npm en node geinstalleerd
+
+                    Met de COPY commando voegen we ons hello world bestand toe aan de image
+
+                    We installeren hierbij een node programma die http-server noemt. Met de -g flag duiden we aan dat dit programma globaal geinstalleerd wordt
+
+                    Met EXPOSE zeggen we tegen docker dat port 8080 beschikbaar geopend moet worden.
+
+                    Als laaste zetten we de CMD die het commando die de container gaat uitvoeren beschrijft
+
+                    Dan builden we de container met docker build, De -t flag die ik toevoeg is om de image later terug te vinden.
+                </aside>
                 <asciinema-player font-size="15px" src="code/dockerfile.json"/>
             </section>
             <section>
                 <h2>Een container maken?</h2>
             </section>
             <section data-vertical-align-top>
+                <aside class="notes">
+                    is nu heel eenvoudig. Hier voegen we een -p flag toe die zal
+                    beschrijven hoe de poorten gemampt moeten worden op het host systeem. In dit voorbeeld mappen we
+                    port 8080 naar poort 80.
+
+                    Waardoor we met curl die een console http client is gewoon localhost kunnen aanspreken.
+                    En zoals je kan zien toont deze mooie onze hello world.
+
+                    Ook met docker ps kan he zijn dat de container draait.
+
+                    Terwijl dit allemaal heel handing is vind ik dit nog steeds te veel werk om uit te voeren.
+
+                    Waardoor we nu docker-compose gaan bespreken
+                </aside>
                 <asciinema-player font-size="15px" src="code/container.json"/>
             </section>
         </section>
@@ -56,7 +110,12 @@
             <section>
                 <h1>Wat is Docker-compose</h1>
                 <img data-src="images/compose.png" width="300"/>
-                <blockquote>Docker-compose maakt het mogelijk om all deze files en commando's te verzamelen in 1 bestand</blockquote>
+                <blockquote>Docker-compose maakt het mogelijk om al deze files en commando's te verzamelen in 1 project.</blockquote>
+                <aside class="notes">
+                    Docker-compose maakt het mogelijk om al deze files en commando's te verzamelen in 1 project.
+
+                    Ik geef hierbij een voorbeeld met het ERP software packet Odoo, die ik gebruikt heb tijdens mijn stage bij somko.
+                </aside>
             </section>
             <section data-vertical-align-top>
                 <h2>Voorbeeld composefile</h2>
@@ -83,29 +142,200 @@ services:
     restart: always
                     </code>
                 </pre>
+                <aside class="notes">
+                    Dit is hoe een compose file eruit ziet. Dit bestand wordt opgemaakt met het YAML configuratie formaat
+                    en bevat de volgende nodes:
+                    - version
+                    - services
+                    - networks
+                    - volumes
+
+                    De laaste 2 nodes zijn niet in dit voorbeeld te zien omdat deze gebruikt worden voor heel specifike toepassingen.
+
+                    De belangerijkste nodes zijn services, die onze containers en hun configuratie zal beschrijven.
+
+                    Hierbij hebben we 2 containers namelijk Odoo en Db. Dit is zo omdat Odoo ook een database nodig heeft.
+
+                    Je zou kunnen zeggen waarom draaien we dit niet in de Odoo image zelf. Dit is zo omdat een container
+                    maar 1 commando tergelijk tijd kan uitvoeren en dit commando ook niet mag stoppen anders sluit de container af.
+                </aside>
             </section>
             <section>
                 <h2>Hoe ziet dit er visueel uit?</h2>
                 <img data-src="images/compose-visueel.png"/>
+                <aside class="notes">
+                    Na deployment van dit bestand zit dit er zo uit.
+
+                    Zoals je kan zien zijn Odoo en Db intern met elkaar verbonden door Dockers intern netwerk.
+
+                    Poort 80 die de web server poort is, Wordt intern door docker geroute naar de host machine.
+
+                    Waardoor dat de gebruiker deze kan aanspreken en dus gebruiken
+                </aside>
             </section>
             <section data-vertical-align-top>
+                <aside class="notes">
+                    Om aan te duiden hoe eenvoudig dit bestand te gebruiken is in de "field".
+
+                    Het commando om een docker-compose file te deployen is docker-compose up en zoals je kan zien
+                    hebben we heel snel een werkende odoo op onze docker machine.
+
+                    Ik moet er wel bijzeggen dat de odoo en database images al waren gedownload op deze machine, en dat
+                    de snelheid van de deployment op dit moment eigenlijk van de internet snelheid afhangt.
+                    Wat ik wel optimaal vind aangezien ik maar 1 commando heb uitgevoerd :).
+                </aside>
                 <h2>Hoe gebruiken we dit bestand?</h2>
                 <asciinema-player font-size="15px" src="code/odoo-compose.json"/>
             </section>
         </section>
         <section>
             <section>
-                <h1>Vergelijking Instalatie methoden</h1>
-                <p class="fragment fade-in">Package Managers</p>
-                <p class="fragment fade-in">Van Sources</p>
-                <p class="fragment fade-in">Docker <3</p>
+                <aside class="notes">
+                    Voor het programeren moet je een omgeving opzetten. Afhankelijk voor welke talen en voor wat programma
+                    je programmeert kan docker hierbij helpen.
+                </aside>
+                <h1>docker in development</h1>
             </section>
             <section>
-                <h1>Package managers</h1>
+                <aside class="notes">
+                    Docker voor development is naar mijn idee het best als je met het volgende zit:
+
+                    - Een programmeer taal die veel begewende onderdelen heeft
+                    Python bijvoorbeeld installeerd zijn bibliotheken lokaal op de machine, dit is handig om schijfruimte te besparen.
+                    Maar niet handig als je verschillende versies van bibliotheken nodig hebt.
+
+                    - Programma's die gebruiken maken van externe programa's zoals databases
+                    Als je in je programmeer omgeving op "RUN PROGRAM" drukt vind ik dat het MOET werken.
+                    Door gebruik te maken van compose en docker kan je dit uitsluiten
+
+                    - Als je alles gemakkelijk wilt kunnen deployen in productie
+                    Doordat je omgeving al klaarstaat voor development is het een kleintje om het te patchen voor een
+                    productie omgeving. In het geval van odoo, zou ik er bijvoorbeeld nog een https server bij toevoegen.
+
+                </aside>
+                <h2>Programmeer taal</h2>
+                <h2 class="fragment fade-in">Externe programma's</h2>
+                <h2 class="fragment fade-in">Productie</h2>
             </section>
+            <section>
+                <aside class="notes">
+                    Natuurlijk is het ook handig als je IDE of Intigrated Development Enviroment docker en compose nativly
+                    ondersteunt. Tijdens mijn stage gebruikte ik python voor odoo module development.
 
+                    Hierbij is mijn editor naar keuze Pycharm. Die Docker al ondersteundt.
+                </aside>
+                <h2>Jetbrains IDEA/pycharm</h2>
+                <div style="display: inline-block">
+                    <img data-src="images/pycharm.png"/>
+                    <p>Pycharm</p>
+                </div>
+                <div style="display: inline-block">
+                    <img data-src="images/idea.jpg"/>
+                    <p>Idea</p>
+                </div>
+            </section>
         </section>
+        <section>
+            <section>
+                <h1>docker in Productie</h1>
+                <aside class="notes">
+                    Het gebruik van docker in productie heeft veel voordelen. En er zijn bijna geen redenen waarom je
+                    docker niet zou gebruiken.
+                </aside>
+            </section>
+            <section>
+                <h2>Documentatie</h2>
+                <aside class="notes">
+                    Het grootste voordeel vind ik documentatie van het installatie procces. Ook is het zeer gemakkelijk om een docker omgeving
+                    op te kuisen als je er een zooitje van gemaakt hebt.
 
+                    Bijvoorbeeld met onze hello world applicatie. Als we deze zouden deployen zonder docker dan moeten we dit doen.
+
+                    Terwijl als we gebruik maken van compose en github we alleen dit hoeven te doen.
+
+                    Je zou kunnen zeggen dat de initele setup wat meer tijd in beslag nam. En afhankelik van welk programma
+                    kan ik daar mee akkoord gaan. Maar stel dat onze service opnieuw will installeren op een andere servers
+                    moeten we alleen deze commando's gebruiken en is het eigenlijk een no brainer.
+                </aside>
+                <div style="display: inline-block" class='fragment fade-in'>
+                    <pre style="width: 900px; height: 300px"  data-trim class='hljs bash' >
+                        <code data-trim>
+                            curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+                            sudo apt-get install nodejs tmux
+                            npm install -g http-server
+                            sudo adduser node --disabled-password --gecos ""
+                            su node
+                            echo "hello world" > index.html
+                            http-server
+                        </code>
+                    </pre>
+                    <p>Manueel</p>
+                </div>
+                <div style="display: inline-block" class='fragment fade-in'>
+                    <pre style="width: 900px; height: 300px"  class='hljs bash'>
+                        <code  data-trim>
+                            git clone http://github.com/thomas15v/helloworld
+                            cd helloworld
+                            docker-compose up
+                        </code>
+                    </pre>
+                    <p>Docker-compose</p>
+                </div>
+            </section>
+            <section>
+                <h2>Geen Virtualizatie nodig</h2>
+                <aside class="notes">
+                    Met docker kan je gewoon de hele machine beheren en zo extra lagen besparen.
+
+                    Ook bespaar je de de resources van de server. En kan je meer dediceren naar de programma's. Dit is zo
+                    omdat een virtuele machine ook geheugen en cpu nodig heeft voor het operating systeem.
+                    Zo zullen programma's het systeem veel efficenter kunnen gebruiken.
+
+                    De standaard installatie heeft docker dus niet en spaart dus een laag uit. Maar het verschil ertussen
+                    is bijna nihil.
+                </aside>
+                <img data-src="images/compare.png"/>
+            </section>
+        </section>
+        <section>
+            <h1>Conclusie ?</h1>
+            <aside class="notes">
+                Docker in development is een heel specific gegeven. En hangt af van welke taal of applicatie je voor programmeert.
+                Docker in productie is een must als je je deployment gestructeerd en projectmatig wilt behandelen.
+
+                De snelheid van zowel development en productie met docker, hangt ook af van de persoon.
+                Docker is not zo simpel om te leren, en bevat heel wat concepten. In development je moet bijna alle trukken
+                kennen als je snel zonder delays wilt werken.
+
+                In productie versnelt het het procces. Zeker als je dezelfde software op meerdere servers wilt deployen.
+            </aside>
+        </section>
+        <section>
+            <h1>Vragen?</h1>
+            <aside class="notes">
+               Zijn er nog vragen?
+            </aside>
+        </section>
+        <section>
+            <h1>Bedankt voor uw aandacht</h1>
+            <small style="text-align: left">
+                <p>
+                    <i class="fa fa-envelope" aria-hidden="true">
+                        <a>tvanmellaerts@gmail.com</a>
+                    </i>
+                </p>
+                <p>
+                    <i class="fa fa-linkedin-square" aria-hidden="true">
+                        <a>https://www.linkedin.com/in/thomas-vanmellaerts-75550b96</a>
+                    </i>
+                </p>
+                <p>
+                    <i class="fa fa-github-square" aria-hidden="true">
+                        <a>https://github.com/thomas15v/</a>
+                    </i>
+                </p>
+            </small>
+        </section>
     </div>
 </div>
 <script src="static/js/jquery.js"></script>
@@ -124,10 +354,9 @@ services:
             // Syntax highlight for <code> elements
             { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
             { src: '//cdn.socket.io/socket.io-1.3.5.js', async: true },
-            //{ src: 'plugin/multiplex/master.js', async: true },
 
             // and if you want speaker notes
-            //{ src: 'plugin/notes-server/client.js', async: true }
+            { src: 'plugin/notes-server/client.js', async: true },
         ]
     });
     Reveal.addEventListener( 'slidechanged', function( event ) {
@@ -138,6 +367,15 @@ services:
             vid.play()
         }
     });
+    /*
+    window.addEventListener("mousedown", handleClick, false);
+    window.addEventListener("contextmenu", function(e) { e.preventDefault(); }, false);
+
+    function handleClick(e) {
+        e.preventDefault();
+        if(e.button === 0) Reveal.next();
+        if(e.button === 2) Reveal.prev();
+    }*/
 </script>
 </body>
 </html>
