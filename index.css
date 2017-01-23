@@ -23,3 +23,16 @@
 .hljs {
     border-radius: 25px;
 }
+
+img {
+    border: 0px !important;
+}
+
+.reveal .slides section[data-vertical-align-top]{
+    top: 0 !important;
+}
+
+.overflow{
+    overflow: auto;
+    width: 100%; /* Takes up the whole width of the slide */
+}
